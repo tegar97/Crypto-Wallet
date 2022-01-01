@@ -1,7 +1,7 @@
 import * as tabActionTypes from "./tabAction";
 
 const initialState = {
-  isTradeModalVisibility: false,
+  isTradeModalVisible: false,
 };
 
 const tabReducer = (state = initialState, action) => {
@@ -9,7 +9,7 @@ const tabReducer = (state = initialState, action) => {
     case tabActionTypes.SET_TRADE_MODAL_VISIBILITY:
       return {
         ...state,
-        isTradeModalVisibility: action.payload.isVisible,
+        isTradeModalVisible: action.payload.isVisible,
       };
     default:
       return state;
