@@ -116,7 +116,7 @@ export function getCoinMarket(
       },
     })
       .then((response) => {
-        if (response.state === 200) {
+        if (response.status === 200) {
           dispatch(getCoinMarketSuccess(response.data));
         } else {
           dispatch(getCoinMarketFailure(response.data));

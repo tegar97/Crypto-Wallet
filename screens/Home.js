@@ -6,7 +6,9 @@ import { getHoldings, getCoinMarket } from "../stores/Market/MarketActions";
 import { useFocusEffect } from "@react-navigation/native";
 import { COLORS, dummyData, icons, SIZES } from "../constants";
 import { BalanceInfo, IconTextButton } from "../components";
+import Chart from "../components/Chart";
 const Home = ({ getHoldings, getCoinMarket, myHoldings, coins }) => {
+  console.log("ini coins state");
   useFocusEffect(
     React.useCallback(() => {
       console.log("load");
@@ -22,7 +24,6 @@ const Home = ({ getHoldings, getCoinMarket, myHoldings, coins }) => {
   );
 
   let percChange = (valueChange / (totalWallet - valueChange)) * 100;
-  console.log(myHoldings);
   function renderWalletInfoSection() {
     return (
       <View
@@ -68,6 +69,10 @@ const Home = ({ getHoldings, getCoinMarket, myHoldings, coins }) => {
     <MainLayout>
       <View style={{ flex: 1, backgroundColor: COLORS.black }}>
         {renderWalletInfoSection()}
+        <Chart
+          containerStyle={{ marginTop: SIZES.padding * 2 }}
+          chartPrice={coins[0]?.sparkline_in_7d?.price}
+        />
       </View>
     </MainLayout>
   );
