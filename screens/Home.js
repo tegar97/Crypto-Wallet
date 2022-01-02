@@ -4,19 +4,70 @@ import MainLayout from "./MainLayout";
 import { connect } from "react-redux";
 import { getHoldings, getCoinMarket } from "../stores/Market/MarketActions";
 import { useFocusEffect } from "@react-navigation/native";
-import { dummyData } from "../constants";
-
+import { COLORS, dummyData, icons, SIZES } from "../constants";
+import { BalanceInfo, IconTextButton } from "../components";
 const Home = ({ getHoldings, getCoinMarket, myHoldings, coins }) => {
   useFocusEffect(
     React.useCallback(() => {
       console.log("load");
+      // eslint-disable-next-line no-undef
       getHoldings((holdings = dummyData.holdings));
+      getCoinMarket();
     }, [])
   );
+  let totalWallet = myHoldings.reduce((a, b) => a + (b.total || 0), 0);
+  let valueChange = myHoldings.reduce(
+    (a, b) => a + (b.holding_value_change_7d || 0),
+    0
+  );
+
+  let percChange = (valueChange / (totalWallet - valueChange)) * 100;
+  console.log(myHoldings);
+  function renderWalletInfoSection() {
+    return (
+      <View
+        style={{
+          paddingHorizontal: SIZES.padding,
+          borderBottomLeftRadius: 25,
+          borderBottomRightRadius: 25,
+          backgroundColor: COLORS.gray,
+        }}
+      >
+        <BalanceInfo
+          title=" Your wallet"
+          displayAmount={totalWallet}
+          changePct={percChange}
+          containerStyle={{ marginTop: 50 }}
+        />
+
+        <View
+          style={{
+            flexDirection: "row",
+            marginTop: 30,
+            marginBottom: -15,
+            paddingHorizontal: SIZES.radius,
+          }}
+        >
+          <IconTextButton
+            label="Transfer"
+            icon={icons.send}
+            containerStyle={{ flex: 1, height: 40, marginRight: SIZES.radius }}
+            onPress={() => console.log("Transfer")}
+          />
+          <IconTextButton
+            label="Withdraw"
+            icon={icons.withdraw}
+            containerStyle={{ flex: 1, height: 40 }}
+            onPress={() => console.log("Transfer")}
+          />
+        </View>
+      </View>
+    );
+  }
   return (
     <MainLayout>
-      <View>
-        <Text>Home</Text>
+      <View style={{ flex: 1, backgroundColor: COLORS.black }}>
+        {renderWalletInfoSection()}
       </View>
     </MainLayout>
   );

@@ -24,6 +24,7 @@ export function getHoldings(
   orderBy = "market_cap_desc",
   sparkline = true,
   priceChangePerc = "7d",
+  perPage = 10,
   page = 1
 ) {
   return (dispatch) => {
@@ -33,7 +34,7 @@ export function getHoldings(
         return item.id;
       })
       .join(",");
-    let apiUrl = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=7d`;
+    let apiUrl = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=${orderBy}&per_page=${perPage}&page=${page}&sparkline=${sparkline}&price_change_percentage=${priceChangePerc}&ids=${ids}`;
 
     return axios({
       url: apiUrl,
@@ -43,8 +44,6 @@ export function getHoldings(
       },
     })
       .then((response) => {
-        console.log("GetHoldings");
-        console.log(response);
         if (response.status == 200) {
           let myHoldings = response.data.map((item) => {
             let coin = holdings.find((a) => a.id == item.id);
